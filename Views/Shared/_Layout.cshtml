@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MeteredPDUWeb</title>
 
-    @* <environment include="Development"> *@
-    @*     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" /> *@
-    @*     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> *@
-    @*     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine"> *@
-    @*     @RenderSection("Styles", false) *@
-    @* </environment> *@
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+        @RenderSection("Styles", false)
+    </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"

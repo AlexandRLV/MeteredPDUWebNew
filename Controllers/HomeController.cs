@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using MeteredPDUWebNew.Models;
 using MeteredPDUWebNew.SNMP;
-using Microsoft.AspNetCore.Mvc;
 
-namespace MeteredPDUWebNew;
+namespace MeteredPDUWebNew.Controllers;
 
 public class HomeController : Controller
 {
@@ -89,7 +89,7 @@ public class HomeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Index(LoginViewModel model)
+    public IActionResult Login(LoginViewModel model)
     {
         if (ModelState.IsValid)
         {

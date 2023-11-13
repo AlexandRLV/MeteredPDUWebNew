@@ -2,6 +2,7 @@ using MeteredPDUWebNew.Logging;
 using MeteredPDUWebNew.SNMP;
 
 const string LogFilePath = "Logs/logs.txt";
+const int Port = 5000;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,4 +32,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+app.Run("http://localhost:" + Port);
