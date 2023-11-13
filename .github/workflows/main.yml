@@ -32,7 +32,7 @@ jobs:
     - name: Publish Artifacts
       run: |
         mkdir -p $GITHUB_WORKSPACE/deploy
-        cp -r /home/runner/work/MeteredPDUWebNew/MeteredPDUWebNew/bin/Release/netcoreapp2.1/ubuntu.20.04-x64/publish/* $GITHUB_WORKSPACE/deploy/
+        cp -r /home/runner/work/MeteredPDUWebNew/bin/Release/netcoreapp2.1/ubuntu.20.04-x64/publish/* $GITHUB_WORKSPACE/deploy/
 
     - name: SSH into Server and Stop App
       uses: appleboy/ssh-action@v0.1.4
