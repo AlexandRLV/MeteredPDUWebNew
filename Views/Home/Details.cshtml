@@ -1,0 +1,53 @@
+﻿@model MeteredPDUWebNew.SNMP.SNMPDevice
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Управление устройством";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/details-page-style.css" asp-append-version="true"/>
+}
+
+<div class="table">
+    <div class="table-header">
+        <h1>Управление устройством</h1>
+    </div>
+    <div class="table-body">
+        <table>
+            <tbody>
+            <tr>
+                <th>Имя устройства</th>
+                <th>@Model.Name</th>
+            </tr>
+            <tr>
+                <th>Статус</th>
+                <th>@Model.OnlineText</th>
+            </tr>
+            <tr>
+                <th>Ток устройства</th>
+                <th>@Model.Amperage</th>
+            </tr>
+            <tr>
+                <th>Напряжение</th>
+                <th>@Model.Voltage</th>
+            </tr>
+            <tr>
+                <th>Мощность</th>
+                <th>@Model.Power</th>
+            </tr>
+            <tr>
+                <th>Реактивная мощность</th>
+                <th>@Model.ReactivePower</th>
+            </tr>
+            </tbody>
+        </table>
+        <div class="btn-group">
+            <div class="btn-group-container">
+                <a class="btn btn-primary" asp-action="UpdateState" asp-route-id="@Model.Id">@(Model.OnlineStatus == MeteredPDUWebNew.SNMP.OnlineStatus.Offline ? "Включить" : "Выключить")</a>
+                <a class="btn btn-primary" asp-action="DeleteDevice" asp-route-id="@Model.Id">Удалить устройство</a>
+                <a class="btn btn-primary" asp-action="List">Назад</a>
+            </div>
+        </div>
+    </div>
+</div>

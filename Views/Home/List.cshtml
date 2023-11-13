@@ -1,0 +1,82 @@
+﻿@model List<MeteredPDUWebNew.SNMP.SNMPDevice>
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Список устройств";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/list-page-style.css" asp-append-version="true"/>
+}
+
+<div class="table">
+    <div class="table-header">
+        <h1>Список устройств</h1>
+    </div>
+    <div class="table-body">
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Ток</th>
+                    <th>Напряжение</th>
+                    <th>Мощность</th>
+                    <th>Реакт. мощность</th>
+                    <th>Статус</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var device in Model)
+                {
+                    <tr>
+                        <td>@device.Name</td>
+                        <td>@device.Amperage</td>
+                        <td>@device.Voltage</td>
+                        <td>@device.Power</td>
+                        <td>@device.ReactivePower</td>
+                        <td>
+                            <span class="badge @(device.OnlineBadgeClass)">
+                                @(device.OnlineText)
+                            </span>
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Details" asp-route-id="@device.Id">
+                                Параметры
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <label for="show" class="show-btn">Добавление устройства</label>
+    <div>
+        <input type="checkbox" id="show">
+        <div class="container1">
+            <label for="show" class="close-btn fas fa-times" title="close">X</label>
+            <div class="text">
+                Добавление устройства
+            </div>
+            <form asp-action="CreateDevice" method="post">
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="data">
+                    <label>Введите имя устройств</label>
+                    <input name="Name" type="text" required>
+                </div>
+                <div class="data">
+                    <label>Введите IP-адрес устройства</label>
+                    <input name="ipaddress" type="text" required>
+                </div>
+                <div class="data">
+                    <label>Введите порт устройства</label>
+                    <input name="port" type="number" required>
+                </div>
+                <div class="btn">
+                    <div class="inner"></div>
+                    <button type="submit">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,40 @@
-﻿@model TModel
+﻿@model MeteredPDUWebNew.Models.LoginViewModel
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Login";
 }
 
-<h2>title</h2>
+@section Styles{
+    <link rel="stylesheet" href="~/css/login-page-style.css" asp-append-version="true"/>
+}
+
+<div class="wrapper">
+    <form method="post" asp-action="Login">
+        <div asp-validation-summary="ModelOnly"></div>
+        <h1>Логин</h1>
+        <div class="input-box">
+            <input asp-for="Email" type="text" placeholder="Email" required />
+            <i class="bx bxs-user"></i>
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div class="input-box">
+            <input asp-for="Password" type="password" placeholder="Пароль" required />
+            <i class="bx bxs-lock-alt"></i>
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <div class="remember-forgot">
+            <label>
+                <input asp-for="RememberMe" type="checkbox" />
+                Запомнить?
+            </label>
+        </div>
+
+        <button type="submit" class="btn">Войти</button>
+
+        <div class="forgot-password">
+            <p>Если забыли пароль - обратитесь к администратору</p>
+        </div>
+    </form>
+</div>
