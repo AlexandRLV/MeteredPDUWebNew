@@ -1,0 +1,79 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: TEST Timeweb Cloud Upload
+
+on:
+  push:
+    branches: [ "test" ]
+  pull_request:
+    branches: [ "test" ]
+
+jobs:
+  publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet publish -c release -r ubuntu.20.04-x64 --self-contained
+    
+    - name: Publish Artifacts
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/deploy
+        cp -r /home/runner/work/MeteredPDUWeb/MeteredPDUWeb/MeteredPDUWeb/bin/Release/netcoreapp2.1/ubuntu.20.04-x64/publish/* $GITHUB_WORKSPACE/deploy/
+
+    - name: SSH into Server and Stop App
+      uses: appleboy/ssh-action@v0.1.4
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        password: ${{ secrets.DEPLOY_PASSWORD }}
+        script: |
+          sudo systemctl stop meteredpdu2.service
+          cd /home
+          rm -rf ./metered2
+          rm -f ./publish2.zip
+
+    - name: Zip Files
+      run: zip -r publish2.zip $GITHUB_WORKSPACE/deploy
+    
+    - name: Copy Files to Remote Server
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        password: ${{ secrets.DEPLOY_PASSWORD }}
+        source: "publish2.zip"
+        target: /home/
+  
+    - name: SSH into Server and Restart App
+      uses: appleboy/ssh-action@v0.1.4
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        password: ${{ secrets.DEPLOY_PASSWORD }}
+        script: |
+          cd /home
+          mkdir ./metered2
+          mkdir ./temp
+          unzip publish2.zip -d ./temp
+          cd ./temp/home/runner/work/MeteredPDUWeb/MeteredPDUWeb/deploy
+          mv -v ./* /home/metered2/
+          cd /home
+          rm -r ./temp
+          rm publish2.zip
+          cd metered2
+          echo "5001" > portSettings.txt
+          sudo systemctl start meteredpdu2.service
